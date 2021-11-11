@@ -4,6 +4,7 @@ import {chrome} from '../../electron-vendors.config.json';
 import {join} from 'path';
 import {builtinModules} from 'module';
 import reactRefresh from '@vitejs/plugin-react-refresh';
+import cesium from 'vite-plugin-cesium';
 
 const PACKAGE_ROOT = __dirname;
 
@@ -19,7 +20,7 @@ const config = {
       '/@/': join(PACKAGE_ROOT, 'src') + '/',
     },
   },
-  plugins: [reactRefresh()],
+  plugins: [reactRefresh(),cesium()],
   base: '',
   server: {
     fs: {

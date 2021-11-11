@@ -46,11 +46,14 @@
     "playwright": "1.16.3",
     "simple-git-hooks": "2.7.0",
     "typescript": "4.4.4",
-    "vite": "2.6.14"
+    "vite": "2.6.14",
+    "vite-plugin-cesium": "^1.2.10"
   },
   "dependencies": {
+    "cesium": "^1.87.1",
     "electron-updater": "4.6.2",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "resium": "^1.14.3"
   }
 }
