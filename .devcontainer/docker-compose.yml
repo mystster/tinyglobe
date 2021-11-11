@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  tinyglobe:
+    build: .
+    tty: true
+    volumes: 
+      - "..:/workspaces/tinyglobe:cached"
+      - "nodemodules:/workspaces/tinyglobe/node_modules"
+      - "cache_electron:/root/.cache"
+      - "/tmp/.X11-unix:/tmp/.X11-unix"
+    env_file: devcontainer.local.env
+volumes:
+  nodemodules:
+    driver: local
+  cache_electron:
+    driver: local

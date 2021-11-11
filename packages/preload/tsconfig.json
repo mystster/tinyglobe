@@ -6,7 +6,10 @@
       "/@/*": [
         "./src/*"
       ]
-    }
+    },
+    "types": [
+      "node"
+    ]
   },
   "files": [
     "types/electron-api.d.ts",
