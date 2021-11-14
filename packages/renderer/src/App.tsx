@@ -11,20 +11,19 @@ const App: React.FC = () => {
   Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_KEY as string;
 
   const cameraRef = useRef<CesiumComponentRef<cCamera>>(null);
-  const zoomIn = () => {
+  const zoom = (amount: number) => {
     console.log("fire");
     if (cameraRef.current?.cesiumElement) {
       const cam = cameraRef.current.cesiumElement as cCamera;
-      cam.zoomIn(1000000);
+      if (amount > 0) {
+        cam.zoomIn(amount);
+      } else if (amount < 0) {
+        cam.zoomOut(-amount);
+      }
       console.log(cam.positionCartographic.height);
     }
   };
-  const zoomOut = () => {
-    if (cameraRef.current?.cesiumElement) {
-      const cam = cameraRef.current.cesiumElement as cCamera;
-      cam.zoomOut(1000000);
-    }
-  };
+
   const move = (moveWidth: number, moveHeight: number) => {
     if (cameraRef.current?.cesiumElement) {
       const cam = cameraRef.current.cesiumElement as cCamera;
@@ -43,7 +42,7 @@ const App: React.FC = () => {
       <Viewer full>
         <Camera ref={cameraRef}></Camera>
       </Viewer>
-      <button onClick={zoomIn}>ZoomIn</button>
+      <button onClick={()=>zoom(100000)}>ZoomIn</button>
     </div>
   );
 };
