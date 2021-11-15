@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import logo from './logo.svg';
-import { Camera, Viewer, CesiumComponentRef } from "resium";
-import { Ion, Camera as cCamera, Cartesian3, Ellipsoid, Cartographic, Rectangle } from "cesium";
+import { Camera, Viewer, CesiumComponentRef, ImageryLayer } from "resium";
+import { Ion, Camera as cCamera, Cartesian3, Ellipsoid, Cartographic, Rectangle, BingMapsImageryProvider, BingMapsStyle } from "cesium";
 import { useKey } from 'react-use';
 import './App.css';
 
@@ -9,6 +9,13 @@ const App: React.FC = () => {
   const [count, setCount] = useState(0);
 
   Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_KEY as string;
+
+  const bingmapImageProvider = new BingMapsImageryProvider({
+    key: import.meta.env.VITE_BINGMAP_KEY as string,
+    url: 'https://dev.virtualearth.net',
+    culture: 'ja',
+    mapStyle: BingMapsStyle.AERIAL_WITH_LABELS
+  })
 
   const cameraRef = useRef<CesiumComponentRef<cCamera>>(null);
   const zoom = (amount: number) => {
@@ -41,6 +48,7 @@ const App: React.FC = () => {
     <div className="App">
       <Viewer full>
         <Camera ref={cameraRef}></Camera>
+        <ImageryLayer imageryProvider={bingmapImageProvider}/>
       </Viewer>
       <button onClick={()=>zoom(1000000)}>ZoomIn</button>
     </div>
