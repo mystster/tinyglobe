@@ -42,7 +42,7 @@ const App: React.FC = () => {
       <Viewer full>
         <Camera ref={cameraRef}></Camera>
       </Viewer>
-      <button onClick={()=>zoom(100000)}>ZoomIn</button>
+      <button onClick={()=>zoom(1000000)}>ZoomIn</button>
     </div>
   );
 };
@@ -64,24 +64,7 @@ function moveMap(cam: cCamera, moveWidth: number, moveHeight: number) {
   console.log("now Center->" + Rectangle.center(nowRec));
   console.log("new->" + Cartographic.fromCartesian(newPos));
   cam.setView({ destination: newPos });
-  // const newWest = nowRec.west + nowRec.width * moveWidth;
-  // if (newWest > Math.PI) newWest - Math.PI * 2;
-  // if (newWest < -Math.PI) newWest + Math.PI * 2;
-  // const newEast = nowRec.east + nowRec.width * moveWidth;
-  // if (newEast > Math.PI) newEast - Math.PI * 2;
-  // if (newEast < -Math.PI) newEast + Math.PI * 2;
-  // const newNorth = nowRec.north + nowRec.height * moveWidth;
-  // if (newNorth > Math.PI / 2) newNorth - Math.PI;
-  // if (newNorth < -Math.PI / 2) newNorth + Math.PI;
-  // const newSouth = nowRec.south + nowRec.height * moveWidth;
-  // if (newSouth > Math.PI / 2) newSouth - Math.PI;
-  // if (newSouth < -Math.PI / 2) newSouth + Math.PI;
-
-  // const newRec = Rectangle.center(Rectangle.fromRadians(newWest, newSouth, newEast, newNorth));
-  // const newPos = Cartesian3.fromDegrees(newRec.longitude, newRec.latitude, newRec.height);
-  // console.log("now->" + Rectangle.center(nowRec));
-  // console.log("new->" + Cartographic.fromCartesian(newPos));
-  //cam.setView({ destination: newPos });
+  // cam.flyTo({ destination: newPos, duration: 0.2 });
 }
 
 export default App;
