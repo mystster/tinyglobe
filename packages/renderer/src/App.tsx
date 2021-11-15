@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import logo from './logo.svg';
-import { Camera, Viewer, CesiumComponentRef, ImageryLayer } from "resium";
-import { Ion, Camera as cCamera, Cartesian3, Ellipsoid, Cartographic, Rectangle, BingMapsImageryProvider, BingMapsStyle } from "cesium";
+import { Camera, Viewer, CesiumComponentRef, ImageryLayer, Entity, PointGraphics, EntityDescription, Label, LabelCollection } from "resium";
+import { Ion, Camera as cCamera, Cartesian3, Ellipsoid, Cartographic, Rectangle, BingMapsImageryProvider, BingMapsStyle, Transforms } from "cesium";
 import { useKey } from 'react-use';
 import './App.css';
+import countriesData from '../assets/countries/countries.json';
 
 const App: React.FC = () => {
   const [count, setCount] = useState(0);
@@ -43,14 +44,24 @@ const App: React.FC = () => {
   useKey("ArrowUp", () => move(0, 0.1));
   useKey("ArrowDown", () => move(0, -0.1));
 
-
   return (
     <div className="App">
       <Viewer full>
         <Camera ref={cameraRef}></Camera>
-        <ImageryLayer imageryProvider={bingmapImageProvider}/>
+        {/* <ImageryLayer imageryProvider={bingmapImageProvider} /> */}
+        <LabelCollection>
+          {countriesData.map((x) => {
+            return (
+              <Label
+                text={x?.translations?.jpn?.common ?? x.name.common}
+                position={Cartesian3.fromDegrees(x.latlng[1], x.latlng[0])}
+                key={x.ccn3}
+              />
+            );
+          })}
+        </LabelCollection>
       </Viewer>
-      <button onClick={()=>zoom(1000000)}>ZoomIn</button>
+      <button onClick={() => zoom(1000000)}>ZoomIn</button>
     </div>
   );
 };
