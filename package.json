@@ -52,6 +52,8 @@
   "dependencies": {
     "cesium": "^1.87.1",
     "electron-updater": "4.6.2",
+    "kuroshiro": "^1.1.2",
+    "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-use": "^17.3.1",
