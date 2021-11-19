@@ -61,13 +61,24 @@ const App: React.FC = () => {
   
   const cameraUpdated = () => {
     console.log("camera update");
-    if (labels && cameraRef.current?.cesiumElement) {
+    if (cameraRef.current?.cesiumElement) {
+      if (!labels) return;
       labels.removeAll();
+      const nowPos = cameraRef.current.cesiumElement.positionCartographic;
+      if (!nowPos) return;
       const nowRec = cameraRef.current.cesiumElement.computeViewRectangle();
-      if (!nowRec || (nowRec.width == Math.PI*2 && nowRec.height == Math.PI)) return;
-      const deg = (rad: number) : number => rad * 180 / Math.PI;
+      if (!nowRec) return;
+      const deg = (rad: number): number => rad * 180 / Math.PI;
+
+      const w = nowRec.width == Math.PI * 2 ? deg(nowPos.longitude) - 35 : deg(nowRec.west);
+      const e = nowRec.width == Math.PI * 2 ? deg(nowPos.longitude) + 35 : deg(nowRec.east);
+      const s = nowRec.height == Math.PI ? deg(nowPos.latitude) - 35 : deg(nowRec.south);
+      const n = nowRec.height == Math.PI ? deg(nowPos.latitude) + 35 : deg(nowRec.north);
+      console.log(`w: ${w} e:${e} s:${s} n:${n}`);
+
+      if (!countriesData) return;
       countriesData.forEach((x) => {
-        if (labels && deg(nowRec?.west) <= x.latlng[1] && x.latlng[1] <= deg(nowRec?.east) && deg(nowRec?.south) <= x.latlng[0] && x.latlng[0] <= deg(nowRec?.north)) {
+        if (labels && w <= x.latlng[1] && x.latlng[1] <= e && s <= x.latlng[0] && x.latlng[0] <= n) {
           labels.add({
             text: x?.translations?.jpn_kana?.common ?? x.name.common,
             position: Cartesian3.fromDegrees(x.latlng[1], x.latlng[0]),
