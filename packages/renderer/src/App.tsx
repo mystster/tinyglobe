@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import logo from './logo.svg';
 import { Camera, Viewer, CesiumComponentRef, ImageryLayer, Entity, PointGraphics, EntityDescription, Label, LabelCollection } from "resium";
-import { Ion, Camera as cCamera, Cartesian3, Ellipsoid, Cartographic, Rectangle, BingMapsImageryProvider, BingMapsStyle, LabelCollection as cLabelCollection } from "cesium";
+import { Ion, Camera as cCamera, Cartesian3, Ellipsoid, Cartographic, Rectangle, BingMapsImageryProvider, BingMapsStyle, LabelCollection as cLabelCollection, Viewer as cViewer } from "cesium";
 import { useKey } from 'react-use';
 import './App.css';
 import countriesData from '../assets/countries_kana.json';
@@ -45,6 +45,38 @@ const App: React.FC = () => {
   useKey("ArrowDown", () => move(0, -0.1));
 
   const labelsRef = useRef<CesiumComponentRef<cLabelCollection>>(null);
+  const viewerRef = useRef<CesiumComponentRef<cViewer>>(null);
+  let labels: cLabelCollection | undefined = undefined;
+  useEffect(() => {
+    if (viewerRef.current?.cesiumElement) {
+      console.log("viewer ok");
+      const viewer = viewerRef.current.cesiumElement as cViewer;
+      if (!labels) {
+        labels = viewer.scene.primitives.add(new cLabelCollection());
+      }
+    } else {
+      console.log("viewer ng");
+    }
+  }, [])
+  
+  const cameraUpdated = () => {
+    console.log("camera update");
+    if (labels && cameraRef.current?.cesiumElement) {
+      labels.removeAll();
+      const nowRec = cameraRef.current.cesiumElement.computeViewRectangle();
+      if (!nowRec || (nowRec.width == Math.PI*2 && nowRec.height == Math.PI)) return;
+      const deg = (rad: number) : number => rad * 180 / Math.PI;
+      countriesData.forEach((x) => {
+        if (labels && deg(nowRec?.west) <= x.latlng[1] && x.latlng[1] <= deg(nowRec?.east) && deg(nowRec?.south) <= x.latlng[0] && x.latlng[0] <= deg(nowRec?.north)) {
+          labels.add({
+            text: x?.translations?.jpn_kana?.common ?? x.name.common,
+            position: Cartesian3.fromDegrees(x.latlng[1], x.latlng[0]),
+            key: x.ccn3
+          });
+        }
+      });
+    }
+  }
   // useEffect(() => {
   //     if (labelsRef.current?.cesiumElement) {
   //       console.log("label ok");
@@ -64,10 +96,10 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <Viewer full>
-        <Camera ref={cameraRef}></Camera>
+      <Viewer full ref={viewerRef}>
+        <Camera ref={cameraRef} onChange = {cameraUpdated}></Camera>
         {/* <ImageryLayer imageryProvider={bingmapImageProvider} /> */}
-        <LabelCollection
+        {/* <LabelCollection
           // ref={labelsRef}
         >
           {countriesData.map((x) => {
@@ -79,7 +111,7 @@ const App: React.FC = () => {
               />
             );
           })}
-        </LabelCollection>
+        </LabelCollection> */}
       </Viewer>
       <button onClick={() => zoom(1000000)}>ZoomIn</button>
     </div>
