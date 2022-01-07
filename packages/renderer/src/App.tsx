@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import logo from './logo.svg';
 import { Camera, Viewer, CesiumComponentRef, ImageryLayer, Entity, PointGraphics, EntityDescription, Label, LabelCollection } from "resium";
 import { Ion, Camera as cCamera, Cartesian3, Ellipsoid, Cartographic, Rectangle, BingMapsImageryProvider, BingMapsStyle, LabelCollection as cLabelCollection, Viewer as cViewer } from "cesium";
-import { useKey } from 'react-use';
+import useKey from 'react-use/lib/useKey';
 import './App.css';
 import countriesData from '../assets/countries_kana.json';
 
