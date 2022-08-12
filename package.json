@@ -46,7 +46,7 @@
     "playwright": "1.25.0",
     "simple-git-hooks": "2.8.0",
     "typescript": "4.7.4",
-    "vite": "2.9.14"
+    "vite": "2.9.15"
   },
   "dependencies": {
     "electron-updater": "4.6.5",
