@@ -41,7 +41,7 @@
     "electron-builder": "22.14.13",
     "electron-devtools-installer": "3.2.0",
     "eslint": "8.23.0",
-    "eslint-plugin-react": "7.31.5",
+    "eslint-plugin-react": "7.31.6",
     "lint-staged": "11.2.6",
     "playwright": "1.25.1",
     "simple-git-hooks": "2.8.0",
